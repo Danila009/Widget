@@ -17,6 +17,7 @@ class TestWidget: GlanceAppWidget() {
 
     companion object{
         const val TEST_WIDGET_PREFS_KEY = "TEST_WIDGET_PREFS_KEY"
+        const val MUSIC_WIDGET_PREFS_KEY = "MUSIC_WIDGET_PREFS_KEY"
         const val RECOMMENDED_DAILY_GLASSES = 8
         const val MAX_GLASSES = 999
     }

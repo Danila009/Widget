@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface MusicApi {
 
-    @GET("/spotify/Music")
-    suspend fun getMusic():Response<List<Music>>
+    @GET("/spotify/Music/7")
+    suspend fun getMusic():Response<Music>
 }

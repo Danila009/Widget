@@ -8,7 +8,7 @@ import javax.inject.Inject
 class ApiRepository @Inject constructor(
     private val musicApi: MusicApi
 ):MusicApi {
-    override suspend fun getMusic(): Response<List<Music>> {
+    override suspend fun getMusic(): Response<Music> {
         return musicApi.getMusic()
     }
 }

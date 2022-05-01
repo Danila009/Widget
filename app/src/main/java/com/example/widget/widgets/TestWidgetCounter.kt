@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.*
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.action.actionRunCallback
@@ -14,42 +15,40 @@ import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.layout.*
 import androidx.glance.text.Text
 import com.example.widget.MainActivity
+import com.example.widget.widgets.TestWidget.Companion.MUSIC_WIDGET_PREFS_KEY
 import com.example.widget.widgets.TestWidget.Companion.RECOMMENDED_DAILY_GLASSES
 import com.example.widget.widgets.TestWidget.Companion.TEST_WIDGET_PREFS_KEY
 
 @Composable
 fun TestWidgetCounter(
+    glassesOfTest:Int,
     modifier:GlanceModifier
 ) {
     Text(
-        text = "Test",
+        text = "Tes_$glassesOfTest",
         modifier = modifier
     )
 }
 
 @Composable
-fun TestWidgetGoal(
-    glassesOfTest:Int,
-    modifier:GlanceModifier
-) {
-    Text(
-        modifier = modifier,
-        text = when{
-            glassesOfTest >= RECOMMENDED_DAILY_GLASSES -> "Test"
-            else -> "Test"
-        }
-    )
-}
-
-@Composable
 fun TestWidgetButtonLayout(
+    musicTitle:String,
     modifier: GlanceModifier,
     context:Context
 ) {
-    Column(
+    Row(
         modifier = modifier,
         verticalAlignment = Alignment.Vertical.CenterVertically
     ) {
+
+        Text(
+            text = musicTitle,
+            modifier = GlanceModifier
+                .clickable(
+                    onClick = actionRunCallback<DaggerTest>()
+                )
+                .defaultWeight()
+        )
 
         Text(
             text = "Clear",
@@ -65,15 +64,6 @@ fun TestWidgetButtonLayout(
             modifier = GlanceModifier
                 .clickable(
                     onClick = actionRunCallback<AddTestClickAction>()
-                )
-                .defaultWeight()
-        )
-
-        Text(
-            text = "Dagger",
-            modifier = GlanceModifier
-                .clickable(
-                    onClick = actionRunCallback<DaggerTest>()
                 )
                 .defaultWeight()
         )
@@ -95,6 +85,7 @@ fun TestWidgetContent(
 ) {
     val prefs = currentState<Preferences>()
     val glassesOfTest = prefs[intPreferencesKey(TEST_WIDGET_PREFS_KEY)] ?: 0
+    val musicTitle = prefs[stringPreferencesKey(MUSIC_WIDGET_PREFS_KEY)] ?: "null"
     val context = LocalContext.current
 
     Column(
@@ -104,18 +95,13 @@ fun TestWidgetContent(
         TestWidgetCounter(
             modifier = modifier
                 .fillMaxWidth()
-                .defaultWeight()
-        )
-
-        TestWidgetGoal(
-            glassesOfTest = glassesOfTest,
-            modifier = modifier
-                .fillMaxWidth()
-                .defaultWeight()
+                .defaultWeight(),
+            glassesOfTest = glassesOfTest
         )
 
         TestWidgetButtonLayout(
             context = context,
+            musicTitle = musicTitle,
             modifier = modifier
                 .fillMaxSize()
                 .defaultWeight()
